@@ -9,7 +9,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  test:
     # Machine virtuelle Ubuntu fournie par GitHub
     runs-on: ubuntu-latest
 
@@ -36,6 +36,29 @@ jobs:
 
       # Exécute les tests unitaires avec Jest
       - run: pnpm test
+
+  build:
+    # Le build ne démarre que si le job test a réussi
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Récupère le code source du dépôt
+      - uses: actions/checkout@v4
+
+      # Installe pnpm (gestionnaire de paquets utilisé par le projet)
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # Installe Node.js et active le cache des dépendances pnpm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Installe les dépendances en respectant exactement le pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
 
       # Compile l'application Next.js pour valider qu'elle build sans erreur
       - run: pnpm build
