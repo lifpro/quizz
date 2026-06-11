@@ -64,23 +64,21 @@ export default function Quiz({ title, description, questions }: QuizProps) {
     return (
       <div className="flex w-full flex-col items-center gap-8 text-center">
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-semibold text-black dark:text-zinc-50">
+          <h2 className="text-2xl font-semibold text-foreground">
             Quiz terminé !
           </h2>
-          <p className="text-zinc-600 dark:text-zinc-400">
+          <p className="text-muted">
             Vous avez obtenu {score} sur {questions.length} bonnes réponses
           </p>
         </div>
 
-        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-900">
-          <span className="text-4xl font-bold text-black dark:text-zinc-50">
-            {percentage}%
-          </span>
+        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-accent ring-4 ring-primary/20">
+          <span className="text-4xl font-bold text-primary">{percentage}%</span>
         </div>
 
         <button
           onClick={handleRestart}
-          className="h-12 rounded-full bg-foreground px-8 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc]"
+          className="h-12 rounded-full bg-primary px-8 text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Recommencer
         </button>
@@ -91,22 +89,22 @@ export default function Quiz({ title, description, questions }: QuizProps) {
   return (
     <div className="flex w-full flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
           {title}
         </h1>
-        <p className="text-zinc-600 dark:text-zinc-400">{description}</p>
+        <p className="text-muted">{description}</p>
       </div>
 
-      <div className="flex items-center justify-between text-sm text-zinc-500 dark:text-zinc-400">
+      <div className="flex items-center justify-between text-sm text-muted">
         <span>
           Question {currentIndex + 1} / {questions.length}
         </span>
-        <span>Score : {score}</span>
+        <span className="font-medium text-primary">Score : {score}</span>
       </div>
 
-      <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-accent">
         <div
-          className="h-full rounded-full bg-foreground transition-all duration-300"
+          className="h-full rounded-full bg-primary transition-all duration-300"
           style={{
             width: `${((currentIndex + (showResult ? 1 : 0)) / questions.length) * 100}%`,
           }}
@@ -114,7 +112,7 @@ export default function Quiz({ title, description, questions }: QuizProps) {
       </div>
 
       <div className="flex flex-col gap-6">
-        <h2 className="text-xl font-medium text-black dark:text-zinc-50">
+        <h2 className="text-xl font-medium text-foreground">
           {currentQuestion.question}
         </h2>
 
@@ -134,14 +132,14 @@ export default function Quiz({ title, description, questions }: QuizProps) {
                   "border-red-500 bg-red-50 text-red-900 dark:bg-red-950 dark:text-red-100";
               } else {
                 optionClass +=
-                  "border-zinc-200 bg-white text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400";
+                  "border-border bg-card text-muted";
               }
             } else if (isSelected) {
               optionClass +=
-                "border-foreground bg-zinc-100 text-black dark:bg-zinc-900 dark:text-zinc-50";
+                "border-primary bg-accent text-foreground ring-2 ring-primary/30";
             } else {
               optionClass +=
-                "border-zinc-200 bg-white text-black hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 dark:hover:border-zinc-600";
+                "border-border bg-card text-foreground hover:border-primary/50 hover:bg-accent";
             }
 
             return (
@@ -165,14 +163,14 @@ export default function Quiz({ title, description, questions }: QuizProps) {
           <button
             onClick={handleValidate}
             disabled={selectedAnswer === null}
-            className="h-12 rounded-full bg-foreground px-8 text-background transition-colors hover:bg-[#383838] disabled:cursor-not-allowed disabled:opacity-40 dark:hover:bg-[#ccc]"
+            className="h-12 rounded-full bg-primary px-8 text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40"
           >
             Valider
           </button>
         ) : (
           <button
             onClick={handleNext}
-            className="h-12 rounded-full bg-foreground px-8 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc]"
+            className="h-12 rounded-full bg-primary px-8 text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             {isLastQuestion ? "Voir les résultats" : "Question suivante"}
           </button>
