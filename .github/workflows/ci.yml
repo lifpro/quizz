@@ -1,0 +1,41 @@
+# Nom du workflow affiché dans l'onglet Actions de GitHub
+name: QUIZZ APP PIPELINE
+
+# Déclencheurs : exécution automatique sur push et pull request vers main
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    # Machine virtuelle Ubuntu fournie par GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      # Récupère le code source du dépôt
+      - uses: actions/checkout@v4
+
+      # Installe pnpm (gestionnaire de paquets utilisé par le projet)
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # Installe Node.js et active le cache des dépendances pnpm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Installe les dépendances en respectant exactement le pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+
+      # Vérifie la qualité du code avec ESLint
+      - run: pnpm lint
+
+      # Exécute les tests unitaires avec Jest
+      - run: pnpm test
+
+      # Compile l'application Next.js pour valider qu'elle build sans erreur
+      - run: pnpm build
